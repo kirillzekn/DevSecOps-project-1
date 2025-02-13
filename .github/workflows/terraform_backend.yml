@@ -1,4 +1,4 @@
-name: Terraform
+name: Terraform Backend
 
 on: workflow_dispatch
 
