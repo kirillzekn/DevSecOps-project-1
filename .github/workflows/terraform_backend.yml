@@ -34,7 +34,7 @@ jobs:
       run: |
         export MY_RESOURCE_GROUP_NAME="rg-terraform-state"
         export REGION="westeurope"
-        export MY_STORAGE_ACCOUNT_NAME="tfstate$DATE"
+        export MY_STORAGE_ACCOUNT_NAME="tfstate$(date +%m%d%Y)"
         export MY_CONTAINER_NAME="tfstate"
                 
         if [ "$(az group list -o tsv --query "[?name=='$MY_RESOURCE_GROUP_NAME'].name")" = "" ];
