@@ -45,10 +45,10 @@ jobs:
             echo "RG was found."
         fi
 
-        if [ "$(az storageaccount list -o tsv --query "[?name=='$MY_STORAGE_ACCOUNT_NAME'].name")" = "" ];
+        if [ "$(az storage account list -o tsv --query "[?name=='$MY_STORAGE_ACCOUNT_NAME'].name")" = "" ];
         then
             echo "No storageaccount was found."
-            az storageaccount create --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_STORAGE_ACCOUNT_NAME --sku Standard_LRS
+            az storage account create --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_STORAGE_ACCOUNT_NAME --sku Standard_LRS
             az storage container create --name $MY_CONTAINER_NAME --account-name $MY_STORAGE_ACCOUNT_NAME
         else
             echo "StorageAccount was found."
