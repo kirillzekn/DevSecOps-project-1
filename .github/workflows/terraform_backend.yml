@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   deploy_backend_for_terraform:
@@ -57,6 +58,7 @@ jobs:
 
   terraform:
     name: 'Terraform'
+    needs: [deploy_backend_for_terraform]
     env: 
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
