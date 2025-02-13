@@ -71,7 +71,7 @@ jobs:
 
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       TF_VAR_AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      
+
     runs-on: ubuntu-latest
     #environment: production
   
@@ -91,6 +91,13 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        
+    - name: prep env vars
+      run: |
+        echo "export ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "export ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "export ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+        echo "export ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
     # Install the latest version of Terraform CLI 
     - name: Setup Terraform
