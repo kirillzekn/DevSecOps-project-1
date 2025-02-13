@@ -10,7 +10,7 @@ jobs:
   deploy_backend_for_terraform:
     name: 'AZ CLI Terraform Backend'
     runs-on: ubuntu-latest
-    environment: production
+    #environment: production
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -64,7 +64,7 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     runs-on: ubuntu-latest
-    environment: production
+    #environment: production
   
     defaults:
       run:
