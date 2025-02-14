@@ -110,7 +110,12 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -backend-config=backend.conf
+      run: |
+        echo ARM_CLIENT_ID is $ARM_CLIENT_ID
+        echo ARM_CLIENT_SECRET is $ARM_CLIENT_SECRET
+        echo ARM_SUBSCRIPTION_ID is $ARM_SUBSCRIPTION_ID
+        echo ARM_TENANT_ID is $ARM_TENANT_ID
+        terraform init -backend-config=backend.conf
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
