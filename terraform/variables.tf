@@ -12,7 +12,7 @@ variable "aks-role_based_access_control_enabled" {
 
 }
 
-variable "aks-rbac_aad " {
+variable "aks-rbac_aad" {
   type        = bool
   description = "Enable Azure Active Directory for the Kubernetes Cluster"
   default     = false

@@ -13,8 +13,8 @@ module "aks" {
   depends_on                             = [azurerm_resource_group.aks]
   prefix                                 = var.prefix
   role_based_access_control_enabled      = var.aks-role_based_access_control_enabled
-  rbac_aad                               = var.aks-rbac_aad
   identity_type                          = var.aks-identity_type
   log_analytics_workspace_daily_quota_gb = var.aks-log_analytics_workspace_daily_quota_gb
   agents_size                            = var.aks-agents_size
+  rbac_aad                               = var.aks-rbac_aad
 }
