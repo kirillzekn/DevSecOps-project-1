@@ -6,6 +6,9 @@ provider "azuread" {
 provider "azurerm" {
 }
 
+provider "kubernetes" {
+}
+
 terraform {
   required_providers {
     azurerm = {
