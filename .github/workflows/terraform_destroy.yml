@@ -37,6 +37,6 @@ jobs:
         terraform init
 
     - name: Terraform destroy
-      if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
+      #if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
       run: terraform destroy -auto-approve -input=false 
       

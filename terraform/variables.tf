@@ -18,3 +18,10 @@ variable "aks-log_analytics_workspace_daily_quota_gb" {
   default     = 0.1
 
 }
+
+variable "aks-agents_size" {
+  type        = string
+  description = "The size of the agents"
+  default     = "Standard_B2s"
+
+}
