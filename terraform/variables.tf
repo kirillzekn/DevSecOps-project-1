@@ -11,3 +11,10 @@ variable "aks-role_based_access_control_enabled" {
   default     = true
 
 }
+
+variable "aks-log_analytics_workspace_daily_quota_gb" {
+  type        = number
+  description = "The daily quota for the Log Analytics workspace in GB"
+  default     = 0.1
+
+}
