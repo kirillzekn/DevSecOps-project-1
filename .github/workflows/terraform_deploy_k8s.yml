@@ -1,4 +1,4 @@
-name: Terraform k8s
+name: Terraform Deploy K8S
 
 on: workflow_dispatch
 
