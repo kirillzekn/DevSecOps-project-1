@@ -8,7 +8,14 @@ variable "prefix" {
 variable "aks-role_based_access_control_enabled" {
   type        = bool
   description = "Enable Role Based Access Control for the Kubernetes Cluster"
-  default     = true
+  default     = false
+
+}
+
+variable "aks-rbac_aad " {
+  type        = bool
+  description = "Enable Azure Active Directory for the Kubernetes Cluster"
+  default     = false
 
 }
 
@@ -22,6 +29,13 @@ variable "aks-log_analytics_workspace_daily_quota_gb" {
 variable "aks-agents_size" {
   type        = string
   description = "The size of the agents"
-  default     = "Standard_B2s"
+  default     = "Standard_B2ms"
+
+}
+
+variable "aks-identity_type" {
+  type        = string
+  description = "The type of identity used for the Kubernetes Cluster"
+  default     = "SystemAssigned"
 
 }
