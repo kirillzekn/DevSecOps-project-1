@@ -4,3 +4,10 @@ variable "prefix" {
   default     = "zekn"
 
 }
+
+variable "aks-role_based_access_control_enabled" {
+  type        = bool
+  description = "Enable Role Based Access Control for the Kubernetes Cluster"
+  default     = true
+
+}
