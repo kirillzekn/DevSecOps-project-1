@@ -11,4 +11,5 @@ module "aks" {
   resource_group_name = azurerm_resource_group.aks.name
   sku_tier            = "Free"
   depends_on          = [azurerm_resource_group.aks]
+  prefix = var.prefix
 }
