@@ -64,7 +64,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Install Snyk CLI
-        uses: snyk/actions/cli@master
+        uses: snyk/actions/cli
         with:
           snyc-token: ${{ secrets.SNYK_TOKEN }}
       
@@ -78,7 +78,7 @@ jobs:
         working-directory: ./application
       
       - name: Snyk to check for vulnerabilities in docker image
-        uses: snyk/actions/docker@master
+        uses: snyk/actions/docker
         with:
           image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
           args: --file=application/Dockerfile --severity-threshold=high
