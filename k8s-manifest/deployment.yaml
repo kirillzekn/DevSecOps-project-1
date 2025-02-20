@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swiggy-app-deployment
+  labels:
+    app: swiggy-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swiggy-app
+  template:
+    metadata:
+      labels:
+        app: swiggy-app
+    spec:
+      containers:
+      - name: swiggy-app
+        image: zekn/gh_action-swiggy-app:latest
+        ports:
+        - containerPort: 3000
