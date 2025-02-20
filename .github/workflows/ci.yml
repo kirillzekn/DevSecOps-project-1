@@ -71,6 +71,20 @@ jobs:
       - name: Snyk auth
         run: |
           snyk auth ${{ secrets.SNYK_TOKEN }}
+      
+      - name: Snyk Container monitor
+        run: |
+          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest --file=./Dockerfile
+        working-directory: ./application
+      
+      - name: Snyk to check for vulnerabilities in docker image
+        uses: snyk/actions/docker@master
+        with:
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+          args: --file=application/Dockerfile --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
       # - name: Azure CLI script
       #   uses: azure/cli@v2
       #   with:
