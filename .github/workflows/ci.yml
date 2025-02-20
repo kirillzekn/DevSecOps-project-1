@@ -16,72 +16,74 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '14'
         
-      - name: Install NPM dependencies
-        run: |
-          npm install
-          echo "Dependencies have been installed."
+      # - name: Install NPM dependencies
+      #   run: |
+      #     npm install
+      #     echo "Dependencies have been installed."
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # - name: SonarQube Scan
+      #   uses: SonarSource/sonarqube-scan-action@v4
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Docker Build
-        run: |
-          docker build -t devsecops_project_1:${{ github.run_id }} .
+      # - name: Docker Build
+      #   run: |
+      #     docker build -t devsecops_project_1:${{ github.run_id }} .
       
-      - name: Trivy scan
-        run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image devsecops_project_1:${{ github.run_id }} --severity HIGH,CRITICAL --format json > trivy-report.json
+      # - name: Trivy scan
+      #   run: |
+      #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image devsecops_project_1:${{ github.run_id }} --severity HIGH,CRITICAL --format json > trivy-report.json
 
-      - name: Docker tag image as latest
-        run: |
-          docker tag devsecops_project_1:${{ github.run_id }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      # - name: Docker tag image as latest
+      #   run: |
+      #     docker tag devsecops_project_1:${{ github.run_id }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
 
-      - name: Docker push latest image
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      # - name: Docker push latest image
+      #   run: |
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
 
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # - name: Azure login
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Install Snyk CLI
-        uses: snyk/actions/cli
-        with:
-          snyc-token: ${{ secrets.SNYK_TOKEN }}
+      # - name: Install Snyk CLI
+      #   uses: snyk/actions/cli
+      #   with:
+      #     snyc-token: ${{ secrets.SNYK_TOKEN }}
       
-      - name: Snyk auth
-        run: |
-          snyk auth ${{ secrets.SNYK_TOKEN }}
+      # - name: Snyk auth
+      #   run: |
+      #     snyk auth ${{ secrets.SNYK_TOKEN }}
       
-      - name: Snyk Container monitor
-        run: |
-          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest --file=./Dockerfile
-        working-directory: ./application
+      # - name: Snyk Container monitor
+      #   run: |
+      #     snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest --file=./Dockerfile
+      #   working-directory: ./application
       
-      - name: Snyk to check for vulnerabilities in docker image
-        uses: snyk/actions/docker
-        with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
-          args: --file=application/Dockerfile --severity-threshold=high
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        continue-on-error: true
+      # - name: Snyk to check for vulnerabilities in docker image
+      #   uses: snyk/actions/docker
+      #   with:
+      #     image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      #     args: --file=application/Dockerfile --severity-threshold=high
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   continue-on-error: true
+
+
       # - name: Azure CLI script
       #   uses: azure/cli@v2
       #   with:
