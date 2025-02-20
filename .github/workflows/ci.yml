@@ -61,7 +61,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Install Snyk CLI
-        uses: snyk/actions/cli@v1
+        uses: snyk/actions/setup@master
         with:
           snyc-token: ${{ secrets.SNYK_TOKEN }}
       
