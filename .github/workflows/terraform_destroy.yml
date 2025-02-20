@@ -43,7 +43,7 @@ jobs:
   destroy_backend_for_terraform:
       name: 'Destroy Terraform Backend'
       runs-on: ubuntu-latest
-      #environment: production
+      needs: terraform
 
       steps:
       # Checkout the repository to the GitHub Actions runner
