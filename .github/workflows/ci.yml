@@ -127,7 +127,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: Run Snyk to check k8s manifect
-        uses: snyk/actions/kubernetes@master
+        uses: snyk/actions/iac@master
         with:
           args: --severity-threshold=high
           file: k8s-manifest/
