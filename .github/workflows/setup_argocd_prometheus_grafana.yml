@@ -41,7 +41,7 @@ jobs:
           run: |
             kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
             kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-            sleep 15
+            sleep 5
             kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
         - name: setup Prometheus
@@ -50,7 +50,8 @@ jobs:
             helm repo update
             kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
             helm install prometheus prometheus-community/prometheus --namespace monitoring
-            kubectl patch svc prometheus-kube-prometheus-prometheus -n monitor -p '{"spec": {"type": "LoadBalancer"}}'
+            sleep 5
+            kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
         
         - name: setup Grafana
           run: |
@@ -58,6 +59,7 @@ jobs:
             helm repo update
             kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
             helm install grafana grafana/grafana --namespace monitoring
+            sleep 5
             kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
       # - name: Deploy to AKS
       #   run: |
