@@ -49,7 +49,7 @@ jobs:
             helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
             helm repo update
             helm list -A
-            helm status prometheus && helm uninstall prometheus || true
+            helm status prometheus -n monitoring && helm uninstall prometheus -n monitoring || true
             kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
             helm install prometheus prometheus-community/prometheus --namespace monitoring
             sleep 5
