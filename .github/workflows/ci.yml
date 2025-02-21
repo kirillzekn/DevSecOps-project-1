@@ -32,7 +32,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   snyk-scan:
-    needs: Sonar-scan
+    needs: sonar-scan
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -63,7 +63,7 @@ jobs:
         continue-on-error: true
 
   build-docker-image:
-    needs: Snyk-scan
+    needs: snyk-scan
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -118,7 +118,7 @@ jobs:
         continue-on-error: true
 
   k8s-manifest-scan:
-    needs: Build-docker-image
+    needs: snyk-scan
     runs-on: ubuntu-latest
     defaults:
       run:
