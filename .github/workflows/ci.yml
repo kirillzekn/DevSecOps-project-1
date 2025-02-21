@@ -129,7 +129,9 @@ jobs:
       - name: Run Snyk to check k8s manifect
         uses: snyk/actions/iac@master
         with:
-          args: --severity-threshold=high
+          args:
+            --severity-threshold=high
+            --report
           file: k8s-manifest/
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
