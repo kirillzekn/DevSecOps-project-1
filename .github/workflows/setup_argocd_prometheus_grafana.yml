@@ -48,21 +48,22 @@ jobs:
           run: |
             helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
             helm repo update
-            kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
-            helm delete prometheus -n monitoring
-            helm install prometheus prometheus-community/prometheus --namespace monitoring
+            kubectl delete all -n prometheus --all
+            kubectl create namespace prometheus --dry-run=client -o yaml | kubectl apply -f -
+            helm install prometheus prometheus-community/prometheus --namespace prometheus
             sleep 5
-            kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
+            kubectl patch svc prometheus-server -n prometheus -p '{"spec": {"type": "LoadBalancer"}}'
         
         - name: setup Grafana
           run: |
             helm repo add grafana https://grafana.github.io/helm-charts
             helm repo update
-            kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
-            helm delete grafana -n monitoring
-            helm install grafana grafana/grafana --namespace monitoring
+            kubectl delete all -n grafana --all
+            kubectl create namespace grafana --dry-run=client -o yaml | kubectl apply -f -
+            helm delete grafana -n grafana
+            helm install grafana grafana/grafana --namespace grafana
             sleep 5
-            kubectl patch svc grafana -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
+            kubectl patch svc grafana -n grafana -p '{"spec": {"type": "LoadBalancer"}}'
       # - name: Deploy to AKS
       #   run: |
       #     kubectl apply -f k8s/deployment.yaml
