@@ -49,10 +49,11 @@ jobs:
             helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
             helm repo update
             kubectl delete all -n prometheus --all
-            kubectl create namespace prometheus --dry-run=client -o yaml | kubectl apply -f -
-            helm install prometheus prometheus-community/prometheus --namespace prometheus
+            kubectl delete all -n monitoring --all
+            kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+            helm install prometheus prometheus-community/prometheus --namespace monitoring
             sleep 5
-            kubectl patch svc prometheus-server -n prometheus -p '{"spec": {"type": "LoadBalancer"}}'
+            kubectl patch svc prometheus-server -n monitoring -p '{"spec": {"type": "LoadBalancer"}}'
         
         - name: setup Grafana
           run: |
