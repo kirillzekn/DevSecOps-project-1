@@ -59,7 +59,7 @@ jobs:
           run: |
             helm repo add grafana https://grafana.github.io/helm-charts
             helm repo update
-            helm status grafana && helm uninstall grafana || true
+            helm status grafana -n grafana && helm uninstall grafana -n grafana || true
             kubectl create namespace grafana --dry-run=client -o yaml | kubectl apply -f -
             helm install grafana grafana/grafana --namespace grafana
             sleep 5
