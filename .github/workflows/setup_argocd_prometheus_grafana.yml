@@ -48,7 +48,7 @@ jobs:
           run: |
             helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
             helm repo update
-            kubectl delete all -n monitoring --all
+            helm status prometheus && helm uninstall prometheus || true
             kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
             helm install prometheus prometheus-community/prometheus --namespace monitoring
             sleep 5
@@ -58,7 +58,7 @@ jobs:
           run: |
             helm repo add grafana https://grafana.github.io/helm-charts
             helm repo update
-            kubectl delete all -n grafana --all
+            helm status grafana && helm uninstall grafana || true
             kubectl create namespace grafana --dry-run=client -o yaml | kubectl apply -f -
             helm install grafana grafana/grafana --namespace grafana
             sleep 5
