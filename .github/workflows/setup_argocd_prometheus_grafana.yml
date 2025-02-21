@@ -39,9 +39,11 @@ jobs:
 
         - name: setup ArdoCD
           run: |
-            kubectl get ns
-            kubectl create namespace argocd
-            kubectl get ns
+            kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+            sleep 15
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
       # - name: Deploy to AKS
       #   run: |
       #     kubectl apply -f k8s/deployment.yaml
