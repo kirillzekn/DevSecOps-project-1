@@ -41,7 +41,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
@@ -51,7 +50,7 @@ jobs:
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
         with:
-          version: latest
+          snyk-version: latest
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
@@ -100,16 +99,16 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
-          format: "sarif"
+          format: "table"
           exit-code: "1"
           severity: "HIGH,CRITICAL"
-          output: 'trivy-results.sarif'
+          #output: 'trivy-results.sarif'
         continue-on-error: true
       
-      - name: Upload trivy report
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results.sarif'
+      # - name: Upload trivy report
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     sarif_file: 'trivy-results.sarif'
 
       # - name: Trivy scan
       #   run: |
