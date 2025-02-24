@@ -96,10 +96,24 @@ jobs:
       # - name: Docker push latest image
       #   run: |
       #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      - name: Run tivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+          format: "template"
+          exit-code: "1"
+          severity: "HIGH,CRITICAL"
+          template: "@/contrib/sarif.tpl"
+          output: "trivy-report.sarif"
+      
+      - name: Upload trivy report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: trivy-report.sarif
 
-      - name: Trivy scan
-        run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image devsecops_project_1:${{ github.run_number }} --severity HIGH,CRITICAL --format json > trivy-report.json
+      # - name: Trivy scan
+      #   run: |
+      #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} --severity HIGH,CRITICAL --format json > trivy-report.json
 
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
