@@ -107,6 +107,10 @@ jobs:
           output: 'trivy-results.sarif'
         continue-on-error: true
       
+      - name: list files
+        run: |
+          ls -l
+      
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
         with:
