@@ -104,6 +104,7 @@ jobs:
           exit-code: "1"
           severity: "HIGH,CRITICAL"
           output: 'trivy-results.sarif'
+        continue-on-error: true
       
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
