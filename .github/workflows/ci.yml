@@ -100,16 +100,15 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
-          format: "template"
+          format: "sarif"
           exit-code: "1"
           severity: "HIGH,CRITICAL"
-          template: "@/contrib/sarif.tpl"
-          output: "trivy-report.sarif"
+          output: 'trivy-results.sarif'
       
       - name: Upload trivy report
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-report.sarif
+          sarif_file: 'trivy-results.sarif'
 
       # - name: Trivy scan
       #   run: |
