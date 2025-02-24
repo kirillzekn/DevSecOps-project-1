@@ -77,22 +77,29 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Docker Build
-        run: |
-          docker build -t devsecops_project_1:${{ github.run_id }} .
       
-      - name: Docker tag image as latest
-        run: |
-          docker tag devsecops_project_1:${{ github.run_id }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
 
-      - name: Docker push latest image
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+      # - name: Docker Build
+      #   run: |
+      #     docker build -t devsecops_project_1:${{ github.run_id }} .
+      
+      # - name: Docker tag image as latest
+      #   run: |
+      #     docker tag devsecops_project_1:${{ github.run_id }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+
+      # - name: Docker push latest image
+      #   run: |
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
 
       - name: Trivy scan
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image devsecops_project_1:${{ github.run_id }} --severity HIGH,CRITICAL --format json > trivy-report.json
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image devsecops_project_1:${{ github.run_number }} --severity HIGH,CRITICAL --format json > trivy-report.json
 
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
@@ -105,13 +112,13 @@ jobs:
       
       - name: Snyk Container monitor
         run: |
-          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest --file=./Dockerfile
+          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} --file=./Dockerfile
         working-directory: ./application
       
       - name: Snyk to check for vulnerabilities in docker image
         uses: snyk/actions/docker@master
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
           args: --file=application/Dockerfile --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
