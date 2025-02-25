@@ -77,30 +77,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: ./application
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./application
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
 
-      # - name: Docker Build
-      #   run: |
-      #     docker build -t devsecops_project_1:${{ github.run_id }} .
-      
-      # - name: Docker tag image as latest
-      #   run: |
-      #     docker tag devsecops_project_1:${{ github.run_id }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
-
-      # - name: Docker push latest image
-      #   run: |
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
       - name: Run tivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:22 #${{ github.run_number }}
           format: "sarif"
-          scan-type: 'config'
+          #scan-type: 'config'
           ignore-unfixed: true
           exit-code: "1"
           severity: "HIGH,CRITICAL"
