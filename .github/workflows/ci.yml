@@ -65,6 +65,10 @@ jobs:
   build-docker-image:
     needs: snyk-scan
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      security-events: write
     defaults:
       run:
         working-directory: ./application
