@@ -66,8 +66,6 @@ jobs:
     needs: snyk-scan
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: read
       security-events: write
     defaults:
       run:
@@ -82,12 +80,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      # - name: Build and push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: ./application
-      #     push: true
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./application
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
 
       # - name: Run tivy vulnerability scan
       #   uses: aquasecurity/trivy-action@master
@@ -100,68 +98,58 @@ jobs:
       #     severity: "HIGH,CRITICAL"
       #     output: 'trivy-results.sarif'
       #   continue-on-error: true
-      
-      ####################################
+
       - name: Trivy scan
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:22 --severity HIGH,CRITICAL --format sarif > trivy-results.sarif
-      ####################################
-
-
-
-      - name: list files
-        run: |
-          ls -l
-          pwd
-          ls -l ../
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:{{ github.run_number }} --severity HIGH,CRITICAL --format sarif > trivy-results.sarif
       
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: './application/trivy-results.sarif'
 
-      # - name: Install Snyk CLI
-      #   uses: snyk/actions/setup@master
-      #   with:
-      #     snyc-token: ${{ secrets.SNYK_TOKEN }}
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+        with:
+          snyc-token: ${{ secrets.SNYK_TOKEN }}
       
-      # - name: Snyk auth
-      #   run: |
-      #     snyk auth ${{ secrets.SNYK_TOKEN }}
+      - name: Snyk auth
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
       
-      # - name: Snyk Container monitor
-      #   run: |
-      #     snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} --file=./Dockerfile
-      #   working-directory: ./application
+      - name: Snyk Container monitor
+        run: |
+          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} --file=./Dockerfile
+        working-directory: ./application
       
-      # - name: Snyk to check for vulnerabilities in docker image
-      #   uses: snyk/actions/docker@master
-      #   with:
-      #     image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
-      #     args: --file=application/Dockerfile --severity-threshold=high
-      #   env:
-      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      #   continue-on-error: true
+      - name: Snyk to check for vulnerabilities in docker image
+        uses: snyk/actions/docker@master
+        with:
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+          args: --file=application/Dockerfile --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
 
-  # k8s-manifest-scan:
-  #   needs: snyk-scan
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./application
-  #   steps:
-  #     - name: Check out repository code
-  #       uses: actions/checkout@v4
-  #     - name: Run Snyk to check k8s manifect
-  #       uses: snyk/actions/iac@master
-  #       with:
-  #         args:
-  #           --severity-threshold=high
-  #           --report
-  #         file: k8s-manifest/
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #       continue-on-error: true
+  k8s-manifest-scan:
+    needs: snyk-scan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./application
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Run Snyk to check k8s manifect
+        uses: snyk/actions/iac@master
+        with:
+          args:
+            --severity-threshold=high
+            --report
+          file: k8s-manifest/
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
 
 
 
