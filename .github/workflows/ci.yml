@@ -113,7 +113,7 @@ jobs:
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: './application/trivy-results.sarif'
 
       # - name: Install Snyk CLI
       #   uses: snyk/actions/setup@master
