@@ -87,21 +87,26 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
 
-      # - name: Run tivy vulnerability scan
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:22 #${{ github.run_number }}
-      #     format: "sarif"
-      #     #scan-type: 'config'
-      #     ignore-unfixed: true
-      #     exit-code: "1"
-      #     severity: "HIGH,CRITICAL"
-      #     output: 'trivy-results.sarif'
-      #   continue-on-error: true
+      - name: Run tivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+          format: "sarif"
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "HIGH,CRITICAL"
+          output: 'trivy-results.sarif'
+        continue-on-error: true
 
-      - name: Trivy scan
+      - name: list files
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:{{ github.run_number }} --severity HIGH,CRITICAL --format sarif > trivy-results.sarif
+          ls -l
+          pwd
+          ls -l ../
+      # - name: Trivy scan
+      #   run: |
+      #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:{{ github.run_number }} --severity HIGH,CRITICAL --format sarif > trivy-results.sarif
       
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
