@@ -99,15 +99,6 @@ jobs:
           output: 'trivy-results.sarif'
         continue-on-error: true
 
-      - name: list files
-        run: |
-          ls -l
-          pwd
-          ls -l ../
-      # - name: Trivy scan
-      #   run: |
-      #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:{{ github.run_number }} --severity HIGH,CRITICAL --format sarif > trivy-results.sarif
-      
       - name: Upload trivy report
         uses: github/codeql-action/upload-sarif@v3
         with:
