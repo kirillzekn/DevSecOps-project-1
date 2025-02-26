@@ -27,7 +27,7 @@ jobs:
         run: |
           ls -l
           cd repo/k8s-manifest/demo-app
-          ls -l
+          ls -l 
           helm template release demo-app --debug --set namespace=${NAMESPACE}, --set image.repository=${IMAGE_REPO}${IMAGE_NAME}, --set image.tag=${{ github.sha }} --output-dir ./..
       - name: Update ArgoCD Manifests
         run: |
