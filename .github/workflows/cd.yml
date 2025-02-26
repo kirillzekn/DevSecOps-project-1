@@ -33,15 +33,17 @@ jobs:
           helm template release . --debug --set namespace=${NAMESPACE} --set image.repository=${IMAGE_REPO}${IMAGE_NAME} --set image.tag=${{ github.sha }} --output-dir ./..
       - name: Update ArgoCD Manifests
         run: |
-          cd repo/k8s-manifest/arogcd
-          cd ..
-          mkdir -p argocd/manifests/apps/demo-app
-          rm -rf argocd/manifests/apps/demo-app/*
-          mv ./demo-app/templates/* argocd/manifests/apps/demo-app/
-          git config --global user.email "zelentsovkir@gmail.com"
-          git config --global user.name "CI_CD Bot"
-          cd argocd
-          git add .
-          git commit -m "Update demo-app commit ${{ github.sha }} "
-          git remote set-url origin https://github.com/kirillzekn/DevSecOps-project-1.git
-          git push origin main
+          pwd
+          ls -ltr
+          # cd repo/k8s-manifest/arogcd
+          # cd ..
+          # mkdir -p argocd/manifests/apps/demo-app
+          # rm -rf argocd/manifests/apps/demo-app/*
+          # mv ./demo-app/templates/* argocd/manifests/apps/demo-app/
+          # git config --global user.email "zelentsovkir@gmail.com"
+          # git config --global user.name "CI_CD Bot"
+          # cd argocd
+          # git add .
+          # git commit -m "Update demo-app commit ${{ github.sha }} "
+          # git remote set-url origin https://github.com/kirillzekn/DevSecOps-project-1.git
+          # git push origin main
