@@ -10,7 +10,7 @@ function OffersBanner() {
     return (
         <div className=' d-flex justify-content-center align-items-center mt-5 flex-column'>
             <div className='w-75 '>
-                <h4 className='fw-bolder'>Best offers for you</h4>
+                <h4 className='fw-bolder'>v2 Best offers for you</h4>
                 <div id='banner-img' className='d-flex align-items-center ' style={{overflowY:"scroll",gap:"20px"}}>
                     <img width={'450px'} src={banner2} alt="Offer" />
                     <img width={'450px'} src={banner1} alt="Offer" />
