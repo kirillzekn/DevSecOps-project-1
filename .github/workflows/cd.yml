@@ -34,7 +34,7 @@ jobs:
       - name: Update ArgoCD Manifests
         run: |
           pwd
-          cd repo
+          cd repo/k8s-manifest/arogcd
           pwd
           ls -ltr
           # cd repo/k8s-manifest/arogcd
