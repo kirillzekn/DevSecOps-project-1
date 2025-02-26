@@ -22,15 +22,15 @@ jobs:
       - name: Generate Kubernetes Manifests with Helm
         env:
           NAMESPACE: demo-app
-          IMAGE_REPO: zekn/
+          IMAGE_REPO: "${{ secrets.DOCKERHUB_USERNAME }}/"
           IMAGE_NAME: devsecops_project_1
         run: |
-          pwd
           ls -l
+          pwd
           cd repo/k8s-manifest/demo-app
           pwd
-          ls -l 
-          helm template release demo-app --debug --set namespace=${NAMESPACE}, --set image.repository=zekn/devsecops_project_1, --set image.tag=${{ github.sha }} --output-dir ./..
+          ls -l
+          helm template release . --debug --set namespace=${NAMESPACE} --set image.repository=${IMAGE_REPO}${IMAGE_NAME} --set image.tag=${{ github.sha }} --output-dir ./..
       - name: Update ArgoCD Manifests
         run: |
           cd repo/k8s-manifest/arogcd
