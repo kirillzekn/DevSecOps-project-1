@@ -86,6 +86,11 @@ jobs:
           context: ./application
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+      
+      - name: Docker create latest tag and push to Docker Hub
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
 
       - name: Run tivy vulnerability scan
         uses: aquasecurity/trivy-action@master
