@@ -2,7 +2,7 @@ namespace: demo-app
 replicas: 1
 
 image:
-  repository: zekn/devsecops_project_1
+  repository: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1
   tag: latest
 
 containerPort: 5000
