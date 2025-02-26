@@ -120,13 +120,13 @@ jobs:
       
       - name: Snyk Container monitor
         run: |
-          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} --file=./Dockerfile
+          snyk container monitor ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.sha }} --file=./Dockerfile
         working-directory: ./application
       
       - name: Snyk to check for vulnerabilities in docker image
         uses: snyk/actions/docker@master
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.sha }}
           args: --file=application/Dockerfile --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
