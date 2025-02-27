@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: zekn/devsecops_project_1:13750cf7656cc557b9b8dfe58c2075e51b37088c
+        image: zekn/devsecops_project_1:cad8412c38b6e20cf772a32a1f02d395eeadf054
         ports:
         - containerPort: 5000
         resources:
