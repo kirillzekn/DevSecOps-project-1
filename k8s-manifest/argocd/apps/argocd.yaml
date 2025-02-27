@@ -8,7 +8,7 @@ spec:
     namespace: demo-app
     server: https://kubernetes.default.svc
   source:
-    path: k8s-manifests/demo-app
+    path: k8s-manifests/manifest/apps/demo-app
     repoURL: https://github.com/kirillzekn/DevSecOps-project-1.git
     targetRevision: HEAD
   project: argocd-demo
