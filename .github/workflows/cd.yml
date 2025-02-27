@@ -30,11 +30,7 @@ jobs:
           IMAGE_REPO: "${{ secrets.DOCKERHUB_USERNAME }}/"
           IMAGE_NAME: devsecops_project_1
         run: |
-          ls -l
-          pwd
           cd repo/k8s-manifest/demo-app
-          pwd
-          ls -l
           helm template release . --debug --set namespace=${NAMESPACE} --set image.repository=${IMAGE_REPO}${IMAGE_NAME} --set image.tag=${{ github.sha }} --output-dir ./..
       - name: Update ArgoCD Manifests
         run: |
