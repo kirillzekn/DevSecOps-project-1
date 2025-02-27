@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   security-events: write
 
 jobs:
@@ -33,10 +33,6 @@ jobs:
           helm template release . --debug --set namespace=${NAMESPACE} --set image.repository=${IMAGE_REPO}${IMAGE_NAME} --set image.tag=${{ github.sha }} --output-dir ./..
       - name: Update ArgoCD Manifests
         run: |
-          # pwd
-          # cd repo/k8s-manifest/
-          # pwd
-          # ls -ltr
           cd repo/k8s-manifest/argocd
           cd ..
           mkdir -p argocd/manifests/apps/demo-app
