@@ -61,7 +61,7 @@ jobs:
             argocd app create starter-kit-apps \
               --repo https://github.com/kirillzekn/DevSecOps-project-1.git
               --path k8s-manifest/argocd/apps
-              --dest-server https://kubernetes.default.svc
+              --dest-server $ARGOCD_SERVER_IP
               --dest-namespace argocd
               --sync-policy automated
               --self-heal
