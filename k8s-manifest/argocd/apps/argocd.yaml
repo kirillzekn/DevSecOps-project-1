@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: demo-app
+  name: starter-kit-apps
   namespace: argocd
 spec:
   destination:
@@ -11,7 +11,7 @@ spec:
     path: k8s-manifest/argocd/manifests/apps/demo-app
     repoURL: https://github.com/kirillzekn/DevSecOps-project-1.git
     targetRevision: HEAD
-  project: argocd
+  project: default
   syncPolicy:
     automated:
       prune: true

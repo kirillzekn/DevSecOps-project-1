@@ -43,6 +43,28 @@ jobs:
             kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
             sleep 5
             kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+        
+        - name: ArgoCD login
+          run: |
+            ARGOCD_SERVER_IP=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            ARGOCD_SERVER_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+            argocd login $ARGOCD_SERVER_IP --username admin --password $ARGOCD_SERVER_PASSWORD --insecure
+
+            argocd app create starter-kit-apps \
+              --repo https://github.com/kirillzekn/DevSecOps-project-1.git
+              --path k8s-manifest/argocd/apps
+              --dest-server https://kubernetes.default.svc
+              --dest-namespace argocd
+              --sync-policy automated
+              --self-heal
+              --auto-prune
+              --sync-option CreateNamespace=true
+              --sync-option ApplyOutOfSyncOnly=true
+              --sync-option SyncWave=0
+              
+            argocd app sync starter-kit-apps
+
+
 
         - name: setup Prometheus
           run: |
