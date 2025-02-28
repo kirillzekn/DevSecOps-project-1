@@ -39,6 +39,8 @@ jobs:
 
         - name: Apply ArdoCD yaml files
           run: |
+            pwd
+            ls -l
             kubectl apply -f repo/k8s-manifest/argocd/apps/argocd_project.yaml
             kubectl apply -f repo/k8s-manifest/argocd/apps/argocd_application.yaml       
 
