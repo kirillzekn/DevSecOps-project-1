@@ -47,7 +47,10 @@ jobs:
 
         - name: Install ArgoCD CLI
           run: |
-            curl -sSL -o /usr/local/bin/argocd
+            curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+            curl -sSL -o argocd-linux-amd64.sha256 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64.sha256
+            sha256sum -c argocd-linux-amd64.sha256
+            mv argocd-linux-amd64 /usr/local/bin/argocd
             chmod +x /usr/local/bin/argocd
             argocd version
 
