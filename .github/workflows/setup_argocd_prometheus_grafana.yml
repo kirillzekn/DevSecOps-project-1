@@ -10,7 +10,7 @@ jobs:
   setup-argocd-prometheus-grafana:
       runs-on: ubuntu-latest
       steps:
-      
+
         - name: Clone Repository
           uses: actions/checkout@v4
           with:
@@ -71,7 +71,3 @@ jobs:
             helm install grafana grafana/grafana --namespace grafana
             sleep 5
             kubectl patch svc grafana -n grafana -p '{"spec": {"type": "LoadBalancer"}}'
-      # - name: Deploy to AKS
-      #   run: |
-      #     kubectl apply -f k8s/deployment.yaml
-      #     kubectl apply -f k8s/service.yaml
