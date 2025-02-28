@@ -10,6 +10,13 @@ jobs:
   setup-argocd-prometheus-grafana:
       runs-on: ubuntu-latest
       steps:
+      
+        - name: Clone Repository
+          uses: actions/checkout@v4
+          with:
+            repository: 'kirillzekn/DevSecOps-project-1'
+            path: ./repo
+
         - name: Install helm
           run: |
             curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3

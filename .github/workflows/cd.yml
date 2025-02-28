@@ -24,6 +24,7 @@ jobs:
         with:
           repository: 'kirillzekn/DevSecOps-project-1'
           path: ./repo
+
       - name: Generate Kubernetes Manifests with Helm
         env:
           NAMESPACE: demo-app
@@ -32,6 +33,7 @@ jobs:
         run: |
           cd repo/k8s-manifest/demo-app
           helm template release . --debug --set namespace=${NAMESPACE} --set image.repository=${IMAGE_REPO}${IMAGE_NAME} --set image.tag=${{ github.sha }} --output-dir ./..
+          
       - name: Update ArgoCD Manifests
         run: |
           cd repo/k8s-manifest/argocd
