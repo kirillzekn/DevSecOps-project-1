@@ -47,6 +47,7 @@ jobs:
         - name: ArgoCD login
           run: |
             ARGOCD_SERVER_IP=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            echo $ARGOCD_SERVER_IP
             ARGOCD_SERVER_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
             argocd login $ARGOCD_SERVER_IP --username admin --password $ARGOCD_SERVER_PASSWORD --insecure
 
@@ -61,7 +62,7 @@ jobs:
               --sync-option CreateNamespace=true
               --sync-option ApplyOutOfSyncOnly=true
               --sync-option SyncWave=0
-              
+
             argocd app sync starter-kit-apps
 
 
