@@ -11,7 +11,7 @@ spec:
     path: k8s-manifest/argocd/manifests/apps/demo-app
     repoURL: https://github.com/kirillzekn/DevSecOps-project-1.git
     targetRevision: HEAD
-  project: default
+  project: demo-app-project
   syncPolicy:
     automated:
       prune: true
