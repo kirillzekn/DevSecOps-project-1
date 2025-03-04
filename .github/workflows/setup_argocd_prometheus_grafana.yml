@@ -44,6 +44,14 @@ jobs:
             export MY_CLUSTER_NAME="zekn-aks"
             az aks get-credentials --admin --name $MY_CLUSTER_NAME --overwrite-existing --resource-group $MY_RESOURCE_GROUP_NAME
 
+        - name: Install ArgoCD
+          run: |
+            kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+            sleep 5
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+            sleep 5
+
         - name: Apply ArdoCD yaml files
           run: |
             pwd
