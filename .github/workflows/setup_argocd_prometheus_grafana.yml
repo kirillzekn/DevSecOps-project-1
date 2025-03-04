@@ -68,6 +68,6 @@ jobs:
             helm repo update
             helm status grafana -n grafana && helm uninstall grafana -n grafana || true
             kubectl create namespace grafana --dry-run=client -o yaml | kubectl apply -f -
-            helm install grafana grafana/grafana --namespace grafana
+            helm install grafana grafana/grafana --namespace grafana --values repo/grafana/grafana.yaml
             sleep 5
             kubectl patch svc grafana -n grafana -p '{"spec": {"type": "LoadBalancer"}}'
