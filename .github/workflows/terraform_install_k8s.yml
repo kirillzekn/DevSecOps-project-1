@@ -71,5 +71,4 @@ jobs:
         TF_VAR_AZURE_DEFAULT_REGION: ${{ secrets.AZURE_DEFAULT_REGION }}
         TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
         TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
-      #if: github.ref == 'refs/heads/"main"' #&& github.event_name == 'push'
       run: terraform apply -auto-approve -input=false 

@@ -57,3 +57,17 @@ variable "TERRAFORM_AZURE_STORAGE_CONTAINER_NAME" {
   description = "The name of the storage container to store the Terraform state file"
 
 }
+
+variable "AKS_RG_NAME" {
+  type        = string
+  description = "The name of the resource group to deploy the AKS cluster"
+  default = "zekn_aks_rg"
+  
+}
+
+variable "AZURE_DEFAULT_REGION" {
+  type        = string
+  description = "The Azure region to deploy the AKS cluster"
+  default     = "West Europe"
+  
+}

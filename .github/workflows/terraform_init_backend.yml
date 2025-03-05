@@ -10,7 +10,6 @@ jobs:
   deploy_backend_for_terraform:
     name: 'AZ CLI Terraform Backend'
     runs-on: ubuntu-latest
-    #environment: production
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -32,7 +31,6 @@ jobs:
           az account show
           
     - name: Create RG and Storage account
-      #export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME="tfstate$(date +%m%d%Y)"
       run: |
         export TERRAFORM_AZURE_RG_NAME=${{ secrets.TERRAFORM_AZURE_RG_NAME }}
         export AZURE_DEFAULT_REGION=${{ secrets.AZURE_DEFAULT_REGION }}

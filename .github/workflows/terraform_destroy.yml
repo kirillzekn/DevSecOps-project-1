@@ -33,11 +33,18 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: |
-        terraform init
+        terraform init \
+          -backend-config="resource_group_name=${TF_VAR_TERRAFORM_AZURE_RG_NAME}" \
+          -backend-config="storage_account_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME}" \
+          -backend-config="container_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME}" \
+          -backend-config="key=terraform.tfstate"
 
     - name: Terraform destroy
-      #if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
       run: terraform destroy -auto-approve -input=false 
 
   destroy_backend_for_terraform:
@@ -65,26 +72,23 @@ jobs:
             az account show
             
       - name: Delete RG and Storage account
-        #export MY_STORAGE_ACCOUNT_NAME="tfstate$(date +%m%d%Y)"
         run: |
-          export MY_RESOURCE_GROUP_NAME="rg-terraform-state"
-          export REGION="westeurope"
-          
-          export MY_STORAGE_ACCOUNT_NAME="tfstate02132025"
-          export MY_CONTAINER_NAME="tfstate"
+          export TERRAFORM_AZURE_RG_NAME=${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+          export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+          export TERRAFORM_AZURE_STORAGE_CONTAINER_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
 
-          if [ "$(az storage account list -o tsv --query "[?name=='$MY_STORAGE_ACCOUNT_NAME'].name")" = "" ];
+          if [ "$(az storage account list -o tsv --query "[?name=='$TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME'].name")" = "" ];
           then
               echo "No StorageAccount was found."
           else
               echo "StorageAccount was found."
-              az storage account delete --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_STORAGE_ACCOUNT_NAME --yes
+              az storage account delete --resource-group $TERRAFORM_AZURE_RG_NAME --name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME --yes
           fi
                   
-          if [ "$(az group list -o tsv --query "[?name=='$MY_RESOURCE_GROUP_NAME'].name")" = "" ];
+          if [ "$(az group list -o tsv --query "[?name=='$TERRAFORM_AZURE_RG_NAME'].name")" = "" ];
           then
               echo "No RG was found."
           else
               echo "RG was found."
-              az group delete --name $MY_RESOURCE_GROUP_NAME --yes
+              az group delete --name $TERRAFORM_AZURE_RG_NAME --yes
           fi
