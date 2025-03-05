@@ -39,7 +39,12 @@ jobs:
         TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
         TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: |
-        terraform init
+        terraform init \
+          -backend-config="resource_group_name=${TF_VAR_TERRAFORM_AZURE_RG_NAME}" \
+          -backend-config="storage_account_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME}" \
+          -backend-config="container_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME}" \
+          -backend-config="key=terraform.tfstate"
+
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format

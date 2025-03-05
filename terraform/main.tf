@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "aks" {
   name     = "zekn_aks_rg"
-  location = var.TF_VAR_AZURE_DEFAULT_REGION
+  location = "West Europe"
 
 }
 
