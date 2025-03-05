@@ -39,3 +39,10 @@ variable "aks-identity_type" {
   default     = "SystemAssigned"
 
 }
+
+# variable "TF_VAR_AZURE_DEFAULT_REGION" {
+#   type        = string
+#   description = "The Azure region to deploy resources"
+#   sensitive = true
+  
+# }
