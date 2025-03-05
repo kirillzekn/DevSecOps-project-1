@@ -32,27 +32,27 @@ jobs:
           az account show
           
     - name: Create RG and Storage account
-      #export MY_STORAGE_ACCOUNT_NAME="tfstate$(date +%m%d%Y)"
+      #export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME="tfstate$(date +%m%d%Y)"
       run: |
-        export MY_RESOURCE_GROUP_NAME="rg-terraform-state"
-        export REGION="westeurope"
+        export TERRAFORM_AZURE_RG_NAME=${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        export AZURE_DEFAULT_REGION=${{ secrets.AZURE_DEFAULT_REGION }}
         
-        export MY_STORAGE_ACCOUNT_NAME="tfstate02132025"
-        export MY_CONTAINER_NAME="tfstate"
+        export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        export TERRAFORM_AZURE_STORAGE_CONTAINER_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
                 
-        if [ "$(az group list -o tsv --query "[?name=='$MY_RESOURCE_GROUP_NAME'].name")" = "" ];
+        if [ "$(az group list -o tsv --query "[?name=='$TERRAFORM_AZURE_RG_NAME'].name")" = "" ];
         then
             echo "No RG was found."
-            az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
+            az group create --name $TERRAFORM_AZURE_RG_NAME --location $AZURE_DEFAULT_REGION
         else
             echo "RG was found."
         fi
 
-        if [ "$(az storage account list -o tsv --query "[?name=='$MY_STORAGE_ACCOUNT_NAME'].name")" = "" ];
+        if [ "$(az storage account list -o tsv --query "[?name=='$TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME'].name")" = "" ];
         then
             echo "No storageaccount was found."
-            az storage account create --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_STORAGE_ACCOUNT_NAME --sku Standard_LRS
-            az storage container create --name $MY_CONTAINER_NAME --account-name $MY_STORAGE_ACCOUNT_NAME
+            az storage account create --resource-group $TERRAFORM_AZURE_RG_NAME --name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME --sku Standard_LRS
+            az storage container create --name $TERRAFORM_AZURE_STORAGE_CONTAINER_NAME --account-name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME
         else
             echo "StorageAccount was found."
         fi

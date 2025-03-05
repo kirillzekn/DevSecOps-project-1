@@ -33,18 +33,38 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_AZURE_DEFAULT_REGION: ${{ secrets.AZURE_DEFAULT_REGION }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: |
         terraform init
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_AZURE_DEFAULT_REGION: ${{ secrets.AZURE_DEFAULT_REGION }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: terraform fmt -check
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_AZURE_DEFAULT_REGION: ${{ secrets.AZURE_DEFAULT_REGION }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: terraform plan -input=false
 
      # On push to "main", build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_AZURE_DEFAULT_REGION: ${{ secrets.AZURE_DEFAULT_REGION }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       #if: github.ref == 'refs/heads/"main"' #&& github.event_name == 'push'
       run: terraform apply -auto-approve -input=false 
