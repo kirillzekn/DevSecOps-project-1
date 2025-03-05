@@ -45,6 +45,10 @@ jobs:
           -backend-config="key=terraform.tfstate"
 
     - name: Terraform destroy
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
       run: terraform destroy -auto-approve -input=false 
 
   destroy_backend_for_terraform:
