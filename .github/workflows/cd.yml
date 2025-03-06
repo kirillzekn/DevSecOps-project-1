@@ -41,7 +41,7 @@ jobs:
           mkdir -p argocd/manifests/apps/demo-app
           rm -rf argocd/manifests/apps/demo-app/*
           mv ./demo-app/templates/* argocd/manifests/apps/demo-app/
-          git config --global user.email "zelentsovkir@gmail.com"
+          git config --global user.email "no-reply@no-reply.io"
           git config --global user.name "CI_CD Bot"
           cd argocd
           git add .
