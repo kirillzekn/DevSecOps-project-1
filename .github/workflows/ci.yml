@@ -52,8 +52,6 @@ jobs:
         uses: snyk/actions/setup@master
         with:
           snyk-version: latest
-        # env:
-        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
       - name: Snyk Authenticate    
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
@@ -87,11 +85,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.sha }}
       
-      # - name: Docker create latest tag and push to Docker Hub
-      #   run: |
-      #     docker tag ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:${{ github.run_number }} ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
-      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/devsecops_project_1:latest
-
       - name: Run tivy vulnerability scan
         uses: aquasecurity/trivy-action@master
         with:
@@ -151,31 +144,3 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true
-
-
-
-
-      # - name: Azure login
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: Azure CLI script
-      #   uses: azure/cli@v2
-      #   with:
-      #     azcliversion: latest
-      #     inlineScript: |
-      #       az account show
-      
-      # - name: setup k8s profile
-      #   run: |
-      #     export MY_RESOURCE_GROUP_NAME="zekn-aks-rg"
-      #     export MY_CLUSTER_NAME="zekn-aks-cluster"
-      #     az aks get-credentials --admin --name $MY_CLUSTER_NAME --overwrite-existing --resource-group $MY_RESOURCE_GROUP_NAME
-          
-      # - name: Deploy to AKS
-      #   run: |
-      #     kubectl apply -f k8s/deployment.yaml
-      #     kubectl apply -f k8s/service.yaml
